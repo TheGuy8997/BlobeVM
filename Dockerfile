@@ -11,12 +11,17 @@ COPY /root/ /
 COPY options.json /
 
 # ---- Install packages ----
-RUN \
-  echo "**** installing packages ****" && \
-  pacman -Syu --noconfirm && \
-  pacman -S --noconfirm --needed firefox jq wget && \
-  chmod +x /install-de.sh && \
-  /install-de.sh
+RUN echo "**** initializing keyring ****" && \
+    pacman-key --init && \
+    pacman-key --populate archlinux && \
+    echo "**** refreshing keys ****" && \
+    pacman -Sy archlinux-keyring --noconfirm && \
+    pacman-key --refresh-keys && \
+    echo "**** updating system ****" && \
+    pacman -Syu --noconfirm && \
+    pacman -S --noconfirm --needed firefox jq wget && \
+    chmod +x /install-de.sh && \
+    /install-de.sh
 
 # ---- Install extra apps ----
 RUN \
