@@ -1,7 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -e
 
 json_file="/options.json"
 
+# --- Default Apps ---
 if jq ".defaultapps | contains([0])" "$json_file" | grep -q true; then
     chmod +x /installable-apps/wine.sh
     /installable-apps/wine.sh
@@ -27,6 +29,7 @@ if jq ".defaultapps | contains([5])" "$json_file" | grep -q true; then
     /installable-apps/minecraft.sh
 fi
 
+# --- Programming ---
 if jq ".programming | contains([0])" "$json_file" | grep -q true; then
     chmod +x /installable-apps/openjdk-8-jre.sh
     /installable-apps/openjdk-8-jre.sh
@@ -40,6 +43,7 @@ if jq ".programming | contains([2])" "$json_file" | grep -q true; then
     /installable-apps/vscodium.sh
 fi
 
+# --- Other Apps ---
 if jq ".apps | contains([0])" "$json_file" | grep -q true; then
     chmod +x /installable-apps/vlc.sh
     /installable-apps/vlc.sh
@@ -60,6 +64,6 @@ if jq ".apps | contains([4])" "$json_file" | grep -q true; then
     chmod +x /installable-apps/tlauncher.sh
     /installable-apps/tlauncher.sh
 fi
-# clean stuff
 
+# --- Clean up ---
 rm -rf /installable-apps
